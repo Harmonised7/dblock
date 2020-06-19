@@ -1,0 +1,13 @@
+modLoader="javafml"
+       loaderVersion="[31.1,)"
+
+       [[mods]]
+           modId="dblock"
+           version="${file.jarVersion}"
+           displayName="DBlock"
+           displayURL="https://www.curseforge.com/minecraft/mc-mods/explosiont"
+           credits="The MMD Discord Server is the best!"
+           authors="Harmonised"
+           description='''
+           Bling!
+           '''
