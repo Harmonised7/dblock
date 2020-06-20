@@ -1,6 +1,7 @@
 package harmonised.dblock.events;
 
 import harmonised.dblock.config.Config;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,20 +24,25 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class EventHandler
 {
-    private static int oneInJumps = Config.config.oneInJumps.get();
+    private static int oneInJumps;
+
+    public static void init()
+    {
+        oneInJumps = Config.config.oneInJumps.get();
+    }
 
     @SubscribeEvent
-    public static void jump( LivingEvent.LivingJumpEvent event )
+    public static void jumped( LivingEvent.LivingJumpEvent event )
     {
         if( !event.getEntity().world.isRemote() )
         {
             if( event.getEntity() instanceof PlayerEntity && !( event.getEntity() instanceof FakePlayer) )
             {
                 PlayerEntity player = (PlayerEntity) event.getEntity();
-                Vec3d pos = player.getPositionVec();
-                double x = pos.getX() % 1;
-                double y = pos.getY() % 1;
-                double z = pos.getZ() % 1;
+                Vec3d vec = player.getPositionVec();
+                double x = vec.getX() % 1;
+                double y = vec.getY() % 1;
+                double z = vec.getZ() % 1;
                 if( x < 0 )
                     x = 1 + x;
                 if( z < 0 )
@@ -44,7 +50,8 @@ public class EventHandler
 
                 if( (int) ( Math.random() * oneInJumps ) == 0 )
                 {
-                    BlockPos blockPos = player.getPosition().up( 2 );
+                    BlockPos pos = player.getPosition().up( 2 );
+                    BlockState state = Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.TOP );
 
                     if( player.isSprinting() )
                     {
@@ -53,31 +60,37 @@ public class EventHandler
                         {
                             case NORTH:
                                 if( z < 0.2 || z > 0.8 )
-                                    blockPos = blockPos.north();
+                                    pos = pos.north();
                                 break;
 
                             case SOUTH:
                                 if( z < 0.2 || z > 0.8 )
-                                    blockPos = blockPos.south();
+                                    pos = pos.south();
                                 break;
 
                             case EAST:
                                 if( x < 0.2 || x > 0.8 )
-                                    blockPos = blockPos.east();
+                                    pos = pos.east();
                                 break;
 
                             case WEST:
                                 if( x < 0.2 || x > 0.8 )
-                                    blockPos = blockPos.west();
+                                    pos = pos.west();
                                 break;
                         }
                     }
 
                     if( y >= 0.5 )
-                        player.world.setBlockState( blockPos.up(), Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM ) );
-                    else
-                        player.world.setBlockState( blockPos, Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.TOP ) );
-                    player.world.playSound( null, event.getEntity().getPosition(), SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 5, 25 );
+                    {
+                        pos = pos.up();
+                        state = Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM );
+                    }
+
+                    if( player.world.getBlockState( pos ).getBlock().equals( Blocks.AIR ) || player.world.getBlockState( pos ).getBlock().equals( Blocks.CAVE_AIR ) )
+                    {
+                        player.world.setBlockState(pos, state);
+                        player.world.playSound(null, event.getEntity().getPosition(), SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 5, 25);
+                    }
                 }
             }
         }
