@@ -10,7 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.TickEvent;
@@ -39,7 +39,7 @@ public class EventHandler
             if( event.getEntity() instanceof PlayerEntity && !( event.getEntity() instanceof FakePlayer) )
             {
                 PlayerEntity player = (PlayerEntity) event.getEntity();
-                Vec3d vec = player.getPositionVec();
+                Vector3d vec = player.getPositionVec();
                 double x = vec.getX() % 1;
                 double y = vec.getY() % 1;
                 double z = vec.getZ() % 1;
@@ -50,7 +50,7 @@ public class EventHandler
 
                 if( (int) ( Math.random() * oneInJumps ) == 0 )
                 {
-                    BlockPos pos = player.getPosition().up( 2 );
+                    BlockPos pos = new BlockPos( player.getPositionVec() ).up( 2 );
                     BlockState state = Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.TOP );
 
                     if( player.isSprinting() )
@@ -89,7 +89,7 @@ public class EventHandler
                     if( player.world.getBlockState( pos ).getBlock().equals( Blocks.AIR ) || player.world.getBlockState( pos ).getBlock().equals( Blocks.CAVE_AIR ) )
                     {
                         player.world.setBlockState(pos, state);
-                        player.world.playSound(null, event.getEntity().getPosition(), SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 5, 25);
+                        player.world.playSound(null, new BlockPos( event.getEntity().getPositionVec() ), SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 5, 25);
                     }
                 }
             }
