@@ -1,0 +1,16 @@
+[
+{
+  "modid": "dblock",
+  "name": "DBlock",
+  "description": "Ruins your jumps with a ~80% success rate!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Harmonised"],
+  "credits": "The MMD Discord Server is the best!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

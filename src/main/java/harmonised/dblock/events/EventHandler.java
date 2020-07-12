@@ -1,48 +1,41 @@
 package harmonised.dblock.events;
 
-import harmonised.dblock.config.Config;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.Direction;
+//import harmonised.dblock.config.Config;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.common.Tags;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
 public class EventHandler
 {
-    private static int oneInJumps;
+    private static final int oneInJumps = 100;
 
-    public static void init()
-    {
-        oneInJumps = Config.config.oneInJumps.get();
-    }
+//    public static void init()
+//    {
+//        oneInJumps = Config.config.oneInJumps.get();
+//    }
 
     @SubscribeEvent
     public static void jumped( LivingEvent.LivingJumpEvent event )
     {
-        if( !event.getEntity().world.isRemote() )
+        if( !event.getEntity().world.isRemote )
         {
-            if( event.getEntity() instanceof PlayerEntity && !( event.getEntity() instanceof FakePlayer) )
+            if( event.getEntity() instanceof EntityPlayer && !( event.getEntity() instanceof FakePlayer) )
             {
-                PlayerEntity player = (PlayerEntity) event.getEntity();
-                Vector3d vec = player.getPositionVec();
-                double x = vec.getX() % 1;
-                double y = vec.getY() % 1;
-                double z = vec.getZ() % 1;
+                EntityPlayer player = (EntityPlayer) event.getEntity();
+                Vec3d vec = player.getPositionVector();
+                double x = vec.x % 1;
+                double y = vec.y % 1;
+                double z = vec.z % 1;
                 if( x < 0 )
                     x = 1 + x;
                 if( z < 0 )
@@ -50,8 +43,8 @@ public class EventHandler
 
                 if( (int) ( Math.random() * oneInJumps ) == 0 )
                 {
-                    BlockPos pos = new BlockPos( player.getPositionVec() ).up( 2 );
-                    BlockState state = Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.TOP );
+                    BlockPos pos = new BlockPos( player.getPositionVector() ).up( 2 );
+                    IBlockState state = Blocks.STONE_SLAB.getDefaultState().withProperty( BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP );
 
                     if( player.isSprinting() )
                     {
@@ -83,13 +76,13 @@ public class EventHandler
                     if( y >= 0.5 )
                     {
                         pos = pos.up();
-                        state = Blocks.POLISHED_DIORITE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM );
+                        state = Blocks.STONE_SLAB.getDefaultState().withProperty( BlockSlab.HALF, BlockSlab.EnumBlockHalf.BOTTOM );
                     }
 
-                    if( player.world.getBlockState( pos ).getBlock().equals( Blocks.AIR ) || player.world.getBlockState( pos ).getBlock().equals( Blocks.CAVE_AIR ) )
+                    if( player.world.getBlockState( pos ).getBlock().equals( Blocks.AIR ) )
                     {
                         player.world.setBlockState(pos, state);
-                        player.world.playSound(null, new BlockPos( event.getEntity().getPositionVec() ), SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 5, 25);
+                        player.world.playSound(null, new BlockPos( event.getEntity().getPositionVector() ), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 5, 25);
                     }
                 }
             }

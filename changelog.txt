@@ -655,7 +655,7 @@ Build: 1.15.2-31.0.8 - Wed Jan 29 21:04:44 GMT 2020
 =========
 Build: 1.15.2-31.0.7 - Wed Jan 29 20:50:44 GMT 2020
 	lex:
-		Fix PlayerChangedDimensionEvent using incorrect from dimension argument in ServerPlayerEntity.teleport. Closes #6457
+		Fix PlayerChangedDimensionEvent using incorrect from dimension argument in ServerEntityPlayer.teleport. Closes #6457
 
 	lex:
 		Fix incorrect keybinding modifiers patch. Closes #6478
