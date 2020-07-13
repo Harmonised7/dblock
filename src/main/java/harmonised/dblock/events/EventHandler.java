@@ -1,6 +1,5 @@
 package harmonised.dblock.events;
 
-//import harmonised.dblock.config.Config;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,11 +17,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EventHandler
 {
     private static final int oneInJumps = 100;
-
-//    public static void init()
-//    {
-//        oneInJumps = Config.config.oneInJumps.get();
-//    }
 
     @SubscribeEvent
     public static void jumped( LivingEvent.LivingJumpEvent event )
