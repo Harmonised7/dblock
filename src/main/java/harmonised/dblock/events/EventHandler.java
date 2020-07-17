@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber
 public class EventHandler
 {
-    private static final int oneInJumps = 100;
+    private static final int oneInJumps = 50;
 
     @SubscribeEvent
     public static void jumped( LivingEvent.LivingJumpEvent event )
