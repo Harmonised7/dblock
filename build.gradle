@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: "com.wynprice.cursemaven"
 
-version = '1.16-1.0'
+version = '1.16.2-1.0'
 group = 'harmonised.dblock'
 archivesBaseName = 'dBlock'
 
@@ -99,7 +99,7 @@ repositories
 
 dependencies
 {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.47'
+    minecraft 'net.minecraftforge:forge:1.16.2-33.0.7'
     implementation 'com.google.code.gson:gson:2.8.6'
 
 //    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.3:api")
