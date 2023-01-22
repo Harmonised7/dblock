@@ -1,29 +1,27 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url  = 'https://plugins.gradle.org/m2/' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: "com.wynprice.cursemaven"
 
-version = '1.16.2-1.0'
+version = '1.19.3-1.0'
 group = 'harmonised.dblock'
 archivesBaseName = 'dBlock'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200707-1.16.1'
+    mappings channel: 'official', version: '1.19.3'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
@@ -64,43 +62,21 @@ minecraft {
 
 repositories
 {
-    jcenter()
-
-    maven
-    {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+    maven { url 'https://maven.blakesmods.com' }
+    maven { url 'https://dvs1.progwml6.com/files/maven/' }
+    maven { url 'https://maven.blamejared.com' }
+    maven {
+        url 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
     }
-
-    maven
-    {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
-
-    maven
-    {
-        url "http://dvs1.progwml6.com/files/maven/"
-    }
-
-    maven
-    {
-        url = "https://maven.theillusivec4.top/"
-    }
-
-    mavenLocal()
-
-    maven {url='https://dist.creeper.host/Sponge/maven'}
-    jcenter()
-    mavenCentral()
 }
 
 dependencies
 {
-    minecraft 'net.minecraftforge:forge:1.16.2-33.0.7'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.5'
+//    implementation 'com.google.code.gson:gson:2.8.6'
 
 //    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.3:api")
 //    runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.3")
